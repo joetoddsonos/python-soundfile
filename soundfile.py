@@ -137,14 +137,18 @@ _ffi_types = {
     'int16': 'short'
 }
 
-try:
-    _libname = _find_library('sndfile')
-    if _libname is None:
-        raise OSError('sndfile library not found')
-    _snd = _ffi.dlopen(_libname)
-except OSError:
+#try:
+#    _libname = _find_library('sndfile')
+#    if _libname is None:
+#        raise OSError('sndfile library not found')
+#    _snd = _ffi.dlopen(_libname)
+#except OSError:
+if True:
     if _sys.platform == 'darwin':
-        _libname = 'libsndfile.dylib'
+        if _machine == 'arm64':
+            _libname = 'libsndfile-arm64.dylib'
+        else:
+            _libname = 'libsndfile_intel.dylib'
     elif _sys.platform == 'win32':
         from platform import architecture as _architecture
         _libname = 'libsndfile' + _architecture()[0] + '.dll'

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-from platform import architecture
+from platform import architecture, machine
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 import sys
@@ -23,7 +23,10 @@ platform = os.environ.get('PYSOUNDFILE_PLATFORM', sys.platform)
 architecture0 = os.environ.get('PYSOUNDFILE_ARCHITECTURE', architecture()[0])
 
 if platform == 'darwin':
-    libname = 'libsndfile.dylib'
+    if machine() == 'arm64':
+        libname = 'libsndfile-arm64.dylib'
+    else:
+        libname = 'libsndfile_intel.dylib'
 elif platform == 'win32':
     libname = 'libsndfile' + architecture0 + '.dll'
 else:
@@ -87,7 +90,7 @@ else:
 
 setup(
     name='soundfile',
-    version='0.10.3post1',
+    version='0.10.3post2',
     description='An audio library based on libsndfile, CFFI and NumPy',
     author='Bastian Bechtold',
     author_email='basti@bastibe.de',
