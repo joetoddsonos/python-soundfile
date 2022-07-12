@@ -4,6 +4,7 @@ from platform import architecture, machine
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 import sys
+import subprocess
 
 PYTHON_INTERPRETERS = '.'.join([
     'cp26', 'cp27',
@@ -23,7 +24,8 @@ platform = os.environ.get('PYSOUNDFILE_PLATFORM', sys.platform)
 architecture0 = os.environ.get('PYSOUNDFILE_ARCHITECTURE', architecture()[0])
 
 if platform == 'darwin':
-    if machine() == 'arm64':
+    cpuinfo = subprocess.check_output(['sysctl', '-n', 'machdep.cpu.brand_string']).decode()
+    if cpuinfo.startswith('Apple'):
         libname = 'libsndfile-arm64.dylib'
     else:
         libname = 'libsndfile_intel.dylib'

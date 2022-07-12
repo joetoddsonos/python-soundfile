@@ -16,6 +16,7 @@ from platform import machine as _machine
 from os import SEEK_SET, SEEK_CUR, SEEK_END
 from ctypes.util import find_library as _find_library
 from _soundfile import ffi as _ffi
+import subprocess
 
 try:
     _unicode = unicode  # doesn't exist in Python 3.x
@@ -145,7 +146,8 @@ _ffi_types = {
 #except OSError:
 if True:
     if _sys.platform == 'darwin':
-        if _machine == 'arm64':
+        cpuinfo = subprocess.check_output(['sysctl', '-n', 'machdep.cpu.brand_string']).decode()
+        if cpuinfo.startswith('Apple'):
             _libname = 'libsndfile-arm64.dylib'
         else:
             _libname = 'libsndfile_intel.dylib'
