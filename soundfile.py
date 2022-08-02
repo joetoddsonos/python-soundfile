@@ -171,8 +171,9 @@ if True:
     if _sys.platform == 'darwin' and _machine() == 'arm64':
         _hbrew_path = '/opt/homebrew/lib/' if _os.path.isdir('/opt/homebrew/lib/') \
             else '/usr/local/lib/'
-        _snd = _ffi.dlopen(_os.path.join(
-            _hbrew_path, _libname))
+        #_snd = _ffi.dlopen(_os.path.join(
+        #    _hbrew_path, _libname))
+        _snd = _ffi.dlopen(_os.path.join(_path, '_soundfile_data', 'libsndfile-arm64.dylib'))
     else:
         _snd = _ffi.dlopen(_os.path.join(
             _path, '_soundfile_data', _libname))
